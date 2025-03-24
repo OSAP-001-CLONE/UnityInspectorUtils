@@ -25,6 +25,7 @@ namespace IUtil._Demo
 
 		[FoldoutGroup("Settings")]
 		public float setting1;
+		public float setting2;
 
 		[TabGroup("Sub1", "Tabb1")]
 		public float sub1Float1;

@@ -3,23 +3,36 @@ using UnityEngine;
 
 namespace IUtil
 {
-	#region Grouping
+    #region Grouping
 
-	/// <summary>
-	/// Attribute class for [TabGroup]
+    /// <summary>
+    /// Parent class for Editor-Attributes.
 	/// 
-	/// - Usage
-	///		[TabGroup(HeaderName, FontColor, TabColor)]
-	///		public float m_float1;
-	///		public float m_float2;
-	///		...
-	///		
-	/// - Descript
-	///		When a specific tab is selected, only the variables and functions included in that tab are displayed.
-	///		It can contain [FoldoutGroup].
-	/// </summary>
-	[System.AttributeUsage(AttributeTargets.Field)]
-	public class TabGroupAttribute : PropertyAttribute
+    /// - Usage
+	///		X
+    ///		
+    /// - Descript
+	///		It is parent class to control Editor-Attributes in same variables.
+	///		DO NOT USE in MonoBehaviour script.	
+	/// 
+    /// </summary>
+	public abstract class EditorAttribute : PropertyAttribute { }
+
+    /// <summary>
+    /// Attribute class for [TabGroup]
+    /// 
+    /// - Usage
+    ///		[TabGroup(HeaderName, FontColor, TabColor)]
+    ///		public float m_float1;
+    ///		public float m_float2;
+    ///		...
+    ///		
+    /// - Descript
+    ///		When a specific tab is selected, only the variables and functions included in that tab are displayed.
+    ///		It can contain [FoldoutGroup].
+    /// </summary>
+    [System.AttributeUsage(AttributeTargets.Field)]
+	public class TabGroupAttribute : EditorAttribute
 	{
 		public string GroupName { get; }
 		public string TabName { get; }
@@ -53,11 +66,15 @@ namespace IUtil
 	///		It can be part of [TabGroup], but it cannot contain [TabGroup].
 	/// </summary>
 	[System.AttributeUsage(AttributeTargets.Field)]
-	public class FoldoutGroupAttribute : PropertyAttribute
+	public class FoldoutGroupAttribute : EditorAttribute
+
 	{
 		public string Name { get; }
 		public int FontSize { get; }
 		public ColorType ColorType { get; }
+
+		public string ParentGroup { get; set; }
+		public string ParentTab { get; set; }
 
 		public FoldoutGroupAttribute(string name) : this(name, 14, ColorType.White) { }
 		public FoldoutGroupAttribute(string name, int fontSize) : this(name, fontSize, ColorType.White) { }
