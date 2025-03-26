@@ -129,6 +129,8 @@ GameObject:
   m_Component:
   - component: {fileID: 158307654}
   - component: {fileID: 158307655}
+  - component: {fileID: 158307656}
+  - component: {fileID: 158307657}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -163,17 +165,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88fa3a21992967245bd353188f5bdef4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_selectInt: 1
-  m_selectFloat: 2
-  m_selectString: Option3
-  test_int: 0
-  tab1Var: 0
-  setting1: 0.57
-  sub1Float1: 0
-  sub1Float2: 0
-  sub1Float3: 0
-  tab2Var: 
-  m_SelectableFloat: 0
+  mainTab1Int: 0
+  mainTab1Vec: {x: 0, y: 0, z: 0}
+  subTab1Int: 0
+  subTab1Float: 0
+  foldFloat1: 7
+  foldFloat2: 8
+  subTab1String: 
+  subTab2Float: 0
+  subTab2Int: 0
+  mainTab2String: 
+  mainTab2Int: 0
+  mainTab3String: 
+  mainTab3Int: 0
+--- !u!114 &158307656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158307653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e376d389a6452a4c9d15d5dbc9941a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isReadonly: 0
+  readonlyValue: 0
+  isHide: 0
+  hideValue: 0
+  isShow: 0
+  showValue: 0
+--- !u!114 &158307657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158307653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64138d35b33210e47b30be861ce3d38c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectInt: 1
+  selectFloat: 0
+  selectString: Option3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using IUtil.Utils;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace IUtil.CustomAttribute
 	{
 		public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
 		{
-			GUI.enabled = !(attribute as ReadOnlyIfAttribute).Condition;
+			GUI.enabled = !property.GetBoolean("ReadOnlyIf", (attribute as ReadOnlyIfAttribute).Condition);
 			EditorGUI.PropertyField(position, property, label);
 			GUI.enabled = true;
 		}

@@ -4,8 +4,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using IUtil;
 using IUtil.Utils;
+using IUtil;
 
 namespace InspectorUtils.Utils
 {
@@ -16,7 +16,8 @@ namespace InspectorUtils.Utils
         private class PropertyData
         {
             public SerializedProperty Property;
-            public EditorAttribute Attribute;
+            public TabGroupAttribute TabAttr;
+            public FoldoutGroupAttribute FoldAttr;
         }
 
         private class TabGroupInfo
@@ -38,15 +39,16 @@ namespace InspectorUtils.Utils
         private List<PropertyData> propertyDataList = new List<PropertyData>();
 
         /** Dictionary to save tab/foldout states. **/
-        private static Dictionary<string, bool> foldoutStates = new Dictionary<string, bool>();
-        private static Dictionary<string, string> activeTabs = new Dictionary<string, string>();
+        private Dictionary<string, bool> foldoutStates = new Dictionary<string, bool>();
+        private Dictionary<string, string> activeTabs = new Dictionary<string, string>();
         
         /** Variables to trace properties' parent group to decide whether draw or not. **/
         private Stack<TabGroupContext> contextStack = new Stack<TabGroupContext>();
         private Dictionary<string, TabGroupInfo> tabGroups = new Dictionary<string, TabGroupInfo>();
         private Dictionary<string, TabGroupContext> foldoutGroups = new Dictionary<string, TabGroupContext>();
         
-        private string currentFoldout = null;
+        private TabGroupAttribute curTabAttr = null;
+        private FoldoutGroupAttribute curFoldAttr = null;
 
         #endregion
 
@@ -62,53 +64,54 @@ namespace InspectorUtils.Utils
         {
             propertyDataList.Clear();
             tabGroups.Clear();
-            contextStack.Clear();
-            currentFoldout = null;
-        }
+            foldoutGroups.Clear();
+			contextStack.Clear();
+            curTabAttr = null;
+            curFoldAttr = null;
+		}
 
+        /// <summary>
+        /// Collect properties to draw
+        /// </summary>
         private void CollectProperties()
         {
             Init();
 
             SerializedProperty prop = serializedObject.GetIterator();
-            while (prop.NextVisible(true))
+            prop.NextVisible(true);
+                
+            do
             {
                 var tabAttr = GetTabGroupAttribute(prop);
                 var foldAttr = GetFoldoutGroupAttribute(prop);
 
+                RegisterGroup(tabAttr);
+                RegisterGroup(foldAttr);
+
                 if (tabAttr != null)
                 {
                     UpdateTabContext(tabAttr);
-                    currentFoldout = null;
+                    curTabAttr = tabAttr;
+                    curFoldAttr = null;
                 }
 
                 if (foldAttr != null)
                 {
-                    UpdateFoldoutContext(foldAttr);
+                    curFoldAttr = foldAttr;
                 }
 
-                // Property data collection
                 propertyDataList.Add(new PropertyData
                 {
                     Property = prop.Copy(),
-                    Attribute = foldAttr == null ? tabAttr : foldAttr
+                    FoldAttr = curFoldAttr,
+                    TabAttr = curTabAttr,
                 });
+            } while (prop.NextVisible(false));
 
-                RegisterGroup(tabAttr);
-                RegisterGroup(foldAttr);
-            }
-        }
+		}
 
         private void UpdateTabContext(TabGroupAttribute tabAttr)
         {
-            // No Parent && Stack exist -> set as parent.
-            if (string.IsNullOrEmpty(tabAttr.ParentGroup) && contextStack.Count > 0)
-            {
-                var parent = contextStack.Peek();
-                tabAttr.ParentGroup = parent.GroupName;
-                tabAttr.ParentTab = parent.TabName;
-            }
-
             contextStack.Push(new TabGroupContext
             {
                 GroupName = tabAttr.GroupName,
@@ -116,29 +119,31 @@ namespace InspectorUtils.Utils
             });
         }
 
-        private void UpdateFoldoutContext(FoldoutGroupAttribute foldAttr)
-        {
-            currentFoldout = foldAttr.Name;
-
-
-            if (contextStack.Count > 0)
-            {
-                var parent = contextStack.Peek();
-                foldAttr.ParentGroup = parent.GroupName;
-                foldAttr.ParentTab = parent.TabName;
-            }
-        }
-        
-        private void RegisterGroup(TabGroupAttribute tabAttr)
+		/// <summary>
+		/// Register TabGroup on tabGroups
+		/// </summary>
+		private void RegisterGroup(TabGroupAttribute tabAttr)
         {
             if (tabAttr == null) return;
             if (!tabGroups.ContainsKey(tabAttr.GroupName))
-            {
-                tabGroups[tabAttr.GroupName] = new TabGroupInfo
-                {
-                    ParentGroup = tabAttr.ParentGroup,
-                    ParentTab = tabAttr.ParentTab
-                };
+			{
+				if (contextStack.Count > 0)
+				{
+                    var parent = contextStack.Peek();
+					tabGroups[tabAttr.GroupName] = new TabGroupInfo
+					{
+						ParentGroup = parent.GroupName,
+						ParentTab = parent.TabName
+					};
+				}
+                else
+				{
+					tabGroups[tabAttr.GroupName] = new TabGroupInfo
+					{
+						ParentGroup = null,
+						ParentTab = null
+					};
+				}
             }
 
             if (!tabGroups[tabAttr.GroupName].Tabs.Contains(tabAttr.TabName))
@@ -147,106 +152,125 @@ namespace InspectorUtils.Utils
             }
         }
 
+        /// <summary>
+        /// Register FoldoutGroup on foldoutGroups
+        /// </summary>
         private void RegisterGroup(FoldoutGroupAttribute foldAttr)
         {
             if (foldAttr == null) return;
 
             if (!foldoutGroups.ContainsKey(foldAttr.Name))
-            {
-                foldoutGroups[foldAttr.Name] = new TabGroupContext
-                {
-                    GroupName = foldAttr.ParentGroup,
-                    TabName = foldAttr.ParentTab
-                };
+			{
+				if (contextStack.Count > 0)
+				{
+					var parent = contextStack.Peek();
+					foldoutGroups[foldAttr.Name] = new TabGroupContext
+					{
+						GroupName = parent.GroupName,
+						TabName = parent.TabName
+					};
+				}
             }
         }
 
+        /// <summary>
+        /// Draw Properties or Groups
+        /// </summary>
         private void DrawProperties()
         {
             HashSet<string> processedGroups = new HashSet<string>();
-            string currentFoldout = null;
-            bool isFoldoutOpen = false;
+            HashSet<string> processedFoldouts = new HashSet<string>();
 
             foreach (var data in propertyDataList)
-            {
-                // 1. Check tab group or foldout group to be revealed (or hidden)
-                if (IsAbleToDrawGroup(data.Attribute)) continue;
+			{
+				TabGroupAttribute tabAttr = data.TabAttr;
+				FoldoutGroupAttribute foldAttr = data.FoldAttr;
 
-                // 2. Tab group toolbar drawing
-                if (data.TabAttr != null && !processedGroups.Contains(data.TabAttr.GroupName))
-                {
-                    DrawTabToolbar(data.TabAttr.GroupName);
-                    processedGroups.Add(data.TabAttr.GroupName);
-                }
+				if (foldAttr != null && !foldoutStates.ContainsKey(foldAttr.Name))
+					foldoutStates[foldAttr.Name] = false;
 
-                // 3. Skip if not active tab
-                if (data.TabAttr != null && !IsTabActive(data.TabAttr.GroupName, data.TabAttr.TabName))
-                    continue;
+                if (tabAttr != null && !activeTabs.ContainsKey(tabAttr.GroupName))
+                    activeTabs[tabAttr.GroupName] = tabGroups[tabAttr.GroupName].Tabs[0];
 
-                // 4. Foldout group handling
-                if (data.FoldoutAttr != null)
-                {
-                    // Close the previous foldout group
-                    if (currentFoldout != null && currentFoldout != data.FoldoutAttr.Name)
-                    {
-                        isFoldoutOpen = false;
-                    }
+				if (!IsAbleToDrawGroup(data.TabAttr)) continue;
+				if (!IsAbleToDrawGroup(data.FoldAttr)) continue;
 
-                    // Start a new foldout group
-                    currentFoldout = data.FoldoutAttr.Name;
-                    isFoldoutOpen = DrawFoldoutGroup(data.FoldoutAttr);
-                }
+				if (tabAttr != null && !processedGroups.Contains(tabAttr.GroupName))
+				{
+					DrawTabHeader(tabAttr.GroupName);
+					processedGroups.Add(tabAttr.GroupName);
+				}
 
-                // 5. Skip properties if the foldout is closed
-                if (currentFoldout != null && !isFoldoutOpen)
-                    continue;
+				if (foldAttr != null)
+				{
+                    if (!processedFoldouts.Contains(foldAttr.Name))
+					{
+						DrawFoldoutGroup(foldAttr);
+						processedFoldouts.Add(foldAttr.Name);
+					}
+					bool isActive = IsFoldActive(foldAttr.Name);
+					if (!isActive) continue;
+				}
 
-                // 6. Property visibility check
-                if (IsPropertyVisible(data))
-                {
-                    EditorGUILayout.PropertyField(data.Property, true);
-                }
+				EditorGUILayout.PropertyField(data.Property, true);
             }
         }
 
-        private bool IsAbleToDrawGroup(EditorAttribute attr)
+		private bool IsAbleToDrawGroup(FoldoutGroupAttribute attr)
+		{
+			if (attr == null) return true;
+
+			return IsFoldGroupActive(attr.Name);
+		}
+		private bool IsAbleToDrawGroup(TabGroupAttribute attr)
         {
             if (attr == null) return true;
 
-
-            // TODO - refer below function
-
+			return IsTabGroupActive(attr.GroupName, attr.TabName);
         }
 
-        // TODO - consider foldout also
-        private bool IsParentActive(string groupName)
+        private bool IsFoldGroupActive(string groupName)
+		{
+			if ((groupName == null || !foldoutGroups.TryGetValue(groupName, out var groupInfo)))
+				return true;
+
+			if (!string.IsNullOrEmpty(groupInfo.GroupName))
+			{
+				return true;
+			}
+
+			return IsTabGroupActive(groupInfo.GroupName, groupInfo.TabName);
+		}
+        private bool IsFoldActive(string groupName)
         {
-            if (!tabGroups.TryGetValue(groupName, out var groupInfo))
-                return true;
-
-            if (string.IsNullOrEmpty(groupInfo.ParentGroup))
-                return true;
-
-            return IsTabActive(groupInfo.ParentGroup, groupInfo.ParentTab);
+            if (!foldoutStates.TryGetValue(groupName, out var groupInfo)) return false;
+            return groupInfo;
         }
-
-        private bool IsPropertyVisible(PropertyData data)
+		private bool IsTabGroupActive(string parentGroup, string parentTab)
         {
-            // Check effective tab context
-            if (!string.IsNullOrEmpty(data.EffectiveGroup))
+            if ((string.IsNullOrEmpty(parentGroup) || !tabGroups.TryGetValue(parentGroup, out var groupInfo)))
+                return true;
+
+            bool isActive = IsTabActive(parentGroup, parentTab);
+            if (!isActive) return false;
+
+			if (string.IsNullOrEmpty(groupInfo.ParentGroup))
             {
-                if (!IsTabActive(data.EffectiveGroup, data.EffectiveTab))
-                    return false;
+                return true;
             }
 
-            // Check direct tab group
-            if (data.TabAttr != null && !IsTabActive(data.TabAttr.GroupName, data.TabAttr.TabName))
-                return false;
+			return IsTabGroupActive(groupInfo.ParentGroup, groupInfo.ParentTab);
+		}
+		private bool IsTabActive(string group, string tab)
+		{
+            activeTabs.TryGetValue(group, out string activeT);
+			return activeTabs.TryGetValue(group, out string activeTab) && activeTab == tab;
+		}
 
-            return true;
-        }
-
-        private void DrawTabToolbar(string groupName)
+        /// <summary>
+        /// Draw Tab Header
+        /// </summary>
+        private void DrawTabHeader(string groupName)
         {
             if (!tabGroups.TryGetValue(groupName, out var groupInfo)) return;
 
@@ -265,28 +289,10 @@ namespace InspectorUtils.Utils
             GUILayout.EndHorizontal();
         }
 
-        private bool IsTabActive(string group, string tab)
-        {
-            return activeTabs.TryGetValue(group, out string activeTab) && activeTab == tab;
-        }
-
-        private FoldoutGroupAttribute GetFoldoutGroupAttribute(SerializedProperty prop)
-        {
-            var targetObj = prop.serializedObject.targetObject;
-            var field = targetObj.GetType().GetField(prop.propertyPath,
-                BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            return field?.GetCustomAttribute<FoldoutGroupAttribute>();
-        }
-
-        private TabGroupAttribute GetTabGroupAttribute(SerializedProperty prop)
-        {
-            var targetObj = prop.serializedObject.targetObject;
-            var field = targetObj.GetType().GetField(prop.propertyPath,
-                BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            return field?.GetCustomAttribute<TabGroupAttribute>();
-        }
-
-        private bool DrawFoldoutGroup(FoldoutGroupAttribute attr)
+		/// <summary>
+		/// Draw Foldout Header
+		/// </summary>
+		private bool DrawFoldoutGroup(FoldoutGroupAttribute attr)
         {
             if (!foldoutStates.ContainsKey(attr.Name))
                 foldoutStates[attr.Name] = false;
@@ -310,6 +316,21 @@ namespace InspectorUtils.Utils
             foldoutStates[attr.Name] = EditorGUI.Foldout(rect, foldoutStates[attr.Name], attr.Name, true, foldoutStyle);
             return foldoutStates[attr.Name];
         }
-    }
+
+		private FoldoutGroupAttribute GetFoldoutGroupAttribute(SerializedProperty prop)
+		{
+			var targetObj = prop.serializedObject.targetObject;
+			var field = targetObj.GetType().GetField(prop.propertyPath,
+				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+			return field?.GetCustomAttribute<FoldoutGroupAttribute>();
+		}
+		private TabGroupAttribute GetTabGroupAttribute(SerializedProperty prop)
+		{
+			var targetObj = prop.serializedObject.targetObject;
+			var field = targetObj.GetType().GetField(prop.propertyPath,
+				BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+			return field?.GetCustomAttribute<TabGroupAttribute>();
+		}
+	}
 }
 #endif

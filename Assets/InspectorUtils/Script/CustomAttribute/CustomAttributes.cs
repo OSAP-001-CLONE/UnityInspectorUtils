@@ -6,19 +6,6 @@ namespace IUtil
     #region Grouping
 
     /// <summary>
-    /// Parent class for Editor-Attributes.
-	/// 
-    /// - Usage
-	///		X
-    ///		
-    /// - Descript
-	///		It is parent class to control Editor-Attributes in same variables.
-	///		DO NOT USE in MonoBehaviour script.	
-	/// 
-    /// </summary>
-	public abstract class EditorAttribute : PropertyAttribute { }
-
-    /// <summary>
     /// Attribute class for [TabGroup]
     /// 
     /// - Usage
@@ -32,23 +19,17 @@ namespace IUtil
     ///		It can contain [FoldoutGroup].
     /// </summary>
     [System.AttributeUsage(AttributeTargets.Field)]
-	public class TabGroupAttribute : EditorAttribute
+	public class TabGroupAttribute : PropertyAttribute
 	{
 		public string GroupName { get; }
 		public string TabName { get; }
-		public string ParentGroup { get; set; }
-		public string ParentTab { get; set; }
 
 		public TabGroupAttribute(
 			string groupName,
-			string tabName,
-			string parentGroup = null,
-			string parentTab = null)
+			string tabName)
 		{
 			GroupName = groupName;
 			TabName = tabName;
-			ParentGroup = parentGroup;
-			ParentTab = parentTab;
 		}
 	}
 
@@ -66,15 +47,13 @@ namespace IUtil
 	///		It can be part of [TabGroup], but it cannot contain [TabGroup].
 	/// </summary>
 	[System.AttributeUsage(AttributeTargets.Field)]
-	public class FoldoutGroupAttribute : EditorAttribute
+	public class FoldoutGroupAttribute : PropertyAttribute
 
 	{
 		public string Name { get; }
 		public int FontSize { get; }
 		public ColorType ColorType { get; }
 
-		public string ParentGroup { get; set; }
-		public string ParentTab { get; set; }
 
 		public FoldoutGroupAttribute(string name) : this(name, 14, ColorType.White) { }
 		public FoldoutGroupAttribute(string name, int fontSize) : this(name, fontSize, ColorType.White) { }
@@ -107,11 +86,13 @@ namespace IUtil
 	public class ButtonAttribute : PropertyAttribute
 	{
 		public string DisplayName { get; }
+		public string GroupName { get; }
 		public string TabName { get; }
 
-		public ButtonAttribute(string displayName, string tabName)
+		public ButtonAttribute(string displayName, string groupName, string tabName)
 		{
 			DisplayName = displayName;
+			GroupName = groupName;
 			TabName = tabName;
 		}
 	}
@@ -120,12 +101,12 @@ namespace IUtil
 
 
 	#region Variable Utility
-	
+
 	/// <summary>
 	/// Attribute class for [ShowIf]
 	/// 
 	/// - Usage
-	///		[ShowIf(Condition)]
+	///		[ShowIf(nameof(Condition))]
 	///		public float m_float;
 	///		
 	/// - Descript
@@ -136,9 +117,9 @@ namespace IUtil
 	[System.AttributeUsage(AttributeTargets.Field)]
 	public class ShowIfAttribute : PropertyAttribute
 	{
-		public bool Condition { get; }
+		public string Condition { get; }
 
-		public ShowIfAttribute(bool condition)
+		public ShowIfAttribute(string condition)
 		{
 			Condition = condition;
 		}
@@ -148,7 +129,7 @@ namespace IUtil
 	/// Attribute class for [HideIf]
 	/// 
 	/// - Usage
-	///		[HideIf(Condition)]
+	///		[HideIf(nameof(Condition))]
 	///		public float m_float;
 	///		
 	/// - Descript
@@ -159,9 +140,9 @@ namespace IUtil
 	[System.AttributeUsage(AttributeTargets.Field)]
 	public class HideIfAttribute : PropertyAttribute
 	{
-		public bool Condition { get; }
+		public string Condition { get; }
 
-		public HideIfAttribute(bool condition)
+		public HideIfAttribute(string condition)
 		{
 			Condition = condition;
 		}
@@ -171,7 +152,7 @@ namespace IUtil
 	/// Attribute class for [ReadOnlyIf]
 	/// 
 	/// - Usage
-	///		[ReadOnlyIf(Condition)]
+	///		[ReadOnlyIf(nameof(Condition))]
 	///		public float m_float;
 	///		
 	/// - Descript
@@ -182,9 +163,9 @@ namespace IUtil
 	[System.AttributeUsage(AttributeTargets.Field)]
 	public class ReadOnlyIfAttribute : PropertyAttribute
 	{
-		public bool Condition { get; }
+		public string Condition { get; }
 
-		public ReadOnlyIfAttribute(bool condition)
+		public ReadOnlyIfAttribute(string condition)
 		{
 			Condition = condition;
 		}
