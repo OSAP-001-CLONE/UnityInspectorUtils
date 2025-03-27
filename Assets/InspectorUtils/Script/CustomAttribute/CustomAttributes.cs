@@ -9,7 +9,7 @@ namespace IUtil
     /// Attribute class for [TabGroup]
     /// 
     /// - Usage
-    ///		[TabGroup(HeaderName, FontColor, TabColor)]
+    ///		[TabGroup(GroupName, TabName, HeaderFontSize, HeaderColorType)]
     ///		public float m_float1;
     ///		public float m_float2;
     ///		...
@@ -23,13 +23,18 @@ namespace IUtil
 	{
 		public string GroupName { get; }
 		public string TabName { get; }
+		public int HeaderFontSize { get; }
+		public ColorType HeaderColorType { get; }
 
-		public TabGroupAttribute(
-			string groupName,
-			string tabName)
+		public TabGroupAttribute(string groupName, string tabName) : this(groupName, tabName, 14) { }
+		public TabGroupAttribute(string groupName, string tabName, int headerFontSize) : this(groupName, tabName, headerFontSize, ColorType.White) { }
+		
+		public TabGroupAttribute(string groupName, string tabName, int headerFontSize, ColorType headerColorType)
 		{
 			GroupName = groupName;
 			TabName = tabName;
+			HeaderFontSize = headerFontSize;
+			HeaderColorType = headerColorType;
 		}
 	}
 
@@ -75,25 +80,44 @@ namespace IUtil
 	/// Attribute class for [Button]
 	/// 
 	/// - Usage
-	///		[Button(DisplayName, TabName)]
-	///		public void Function() { }
+	///		int param1, param2 ... ;
+	///		
+	///		[Button(nameof(param1), nameof(param2), ...)]
+	///		public void Function(int param1, int param2, ...) { }
 	///		
 	/// - Descript
 	///		You can display a button in the inspector to execute the corresponding function.
-	///		You can include the function in a specific tab.
+	///		It can also get parameters (by name) upto 6.
+	/// 
 	/// </summary>
 	[System.AttributeUsage(AttributeTargets.Method)]
-	public class ButtonAttribute : PropertyAttribute
+	public class ButtonAttribute : Attribute
 	{
-		public string DisplayName { get; }
-		public string GroupName { get; }
-		public string TabName { get; }
+		public string[] ParameterNames { get; }
 
-		public ButtonAttribute(string displayName, string groupName, string tabName)
+		public ButtonAttribute(string param1)
 		{
-			DisplayName = displayName;
-			GroupName = groupName;
-			TabName = tabName;
+			ParameterNames = new string[] { param1 };
+		}
+		public ButtonAttribute(string param1, string param2)
+		{
+			ParameterNames = new string[] { param1, param2 };
+		}
+		public ButtonAttribute(string param1, string param2, string param3)
+		{
+			ParameterNames = new string[] { param1, param2, param3 };
+		}
+		public ButtonAttribute(string param1, string param2, string param3, string param4)
+		{
+			ParameterNames = new string[] { param1, param2, param3, param4 };
+		}
+		public ButtonAttribute(string param1, string param2, string param3, string param4, string param5)
+		{
+			ParameterNames = new string[] { param1, param2, param3, param4, param5 };
+		}
+		public ButtonAttribute(string param1, string param2, string param3, string param4, string param5, string param6)
+		{
+			ParameterNames = new string[] { param1, param2, param3, param4, param5, param6 };
 		}
 	}
 

@@ -47,6 +47,5 @@ namespace IUtil.Utils
 			return Convert.ToBoolean(fieldInfo.GetValue(targetObject));
 		}
 	}
-
 #endif
 }

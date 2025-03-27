@@ -131,6 +131,7 @@ GameObject:
   - component: {fileID: 158307655}
   - component: {fileID: 158307656}
   - component: {fileID: 158307657}
+  - component: {fileID: 158307658}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -209,8 +210,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectInt: 1
-  selectFloat: 0
+  selectFloat: 6
   selectString: Option3
+--- !u!114 &158307658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158307653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f6089af9e30deb41ad4376f9b00f308, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Func1Param1: Good
+  Func2Param1: 4
+  Func2Param2: 5.98
+  str1: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

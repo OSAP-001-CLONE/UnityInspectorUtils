@@ -13,5 +13,10 @@ namespace IUtil.Utils
 		{
 			Debug.LogError($"IUtil Error : [{attr}] can't matching type: {wrongType}");
 		}
+
+		public static void ParameterCountError(string attr, string funcName)
+		{
+			Debug.LogError($"IUtil Error : [{attr}] - {funcName} \nThe number of parameters does not match.");
+		}
 	}
 }
