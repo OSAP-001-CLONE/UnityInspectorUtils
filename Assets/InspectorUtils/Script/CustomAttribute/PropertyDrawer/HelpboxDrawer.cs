@@ -19,7 +19,6 @@ namespace IUtil.CustomAttribute
 
 			GUILayout.Space(-15f);
 
-			GUIContent content = new GUIContent((attribute as HelpBoxAttribute).Content, EditorGUIUtility.IconContent("console.infoicon").image);
 			EditorGUILayout.HelpBox((attribute as HelpBoxAttribute).Content, (UnityEditor.MessageType)(attribute as HelpBoxAttribute).MessageType);
 
 			GUILayout.Space(5f);

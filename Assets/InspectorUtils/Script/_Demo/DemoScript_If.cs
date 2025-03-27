@@ -4,27 +4,17 @@ namespace IUtil._Demo
 {
     public class DemoScript_If : MonoBehaviour
 	{
-		[SerializeField]
-		private bool isReadonly;
+		public bool isReadonly;
+		[ReadOnlyIf(nameof(isReadonly))]
+		public int readonlyValue;
 
-		[SerializeField, ReadOnlyIf(nameof(isReadonly))]
-		private int readonlyValue;
+		public bool isHide;
+		[HideIf(nameof(isHide))]
+		public float hideValue;
 
-
-		[Space(10)]
-		[SerializeField]
-		private bool isHide;
-
-		[SerializeField, HideIf(nameof(isHide))]
-		private float hideValue;
-
-
-		[Space(10)]
-		[SerializeField]
-		private bool isShow;
-
-		[SerializeField, ShowIf(nameof(isShow))]
-		private float showValue;
+		public bool isShow;
+		[ShowIf(nameof(isShow))]
+		public float showValue;
 
 	}
 }

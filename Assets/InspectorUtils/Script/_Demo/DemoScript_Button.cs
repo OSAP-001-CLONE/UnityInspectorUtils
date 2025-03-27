@@ -23,7 +23,6 @@ namespace IUtil._Demo
 			Debug.Log($"Func2 Executed! \nParam1 : {param1}, Param2 : {param2}");
 		}
 
-
 		[SerializeField]
 		private string str1 = "Hello World!";
 
