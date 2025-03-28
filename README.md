@@ -1,4 +1,4 @@
-# 🚀 InspectorUtils
+# 🚀 Unity Inspector Utils
 
 Unity Inspector Utils is a collection of powerful custom attributes designed to improve the Unity Inspector experience, making it more dynamic and user-friendly.
 
