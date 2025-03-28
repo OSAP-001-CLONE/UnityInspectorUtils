@@ -17,6 +17,7 @@ Unity Inspector Utils is a collection of powerful custom attributes designed to 
 | **2022.3.47f1** |:heavy_check_mark:|
 | **2022.3.20f1** |:heavy_check_mark:|
 | **2022.3.10f1** |:heavy_check_mark:|
+| **2019.4.0f1** |:heavy_check_mark:|
 
 
 ## How To Use
