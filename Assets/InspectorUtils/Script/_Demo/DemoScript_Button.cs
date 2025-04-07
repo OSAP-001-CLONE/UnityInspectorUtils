@@ -11,6 +11,12 @@ namespace IUtil._Demo
 		public int Func2Param1;
 		public float Func2Param2;
 
+		[Button]
+		public void Func0()
+		{
+			Debug.Log($"Func0 Excuted");
+		}
+
 		[Button(nameof(Func1Param1))]
 		public void Func1(string param1)
 		{

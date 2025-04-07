@@ -95,6 +95,10 @@ namespace IUtil
 	{
 		public string[] ParameterNames { get; }
 
+		public ButtonAttribute()
+		{
+			ParameterNames = new string[] { };
+		}
 		public ButtonAttribute(string param1)
 		{
 			ParameterNames = new string[] { param1 };
