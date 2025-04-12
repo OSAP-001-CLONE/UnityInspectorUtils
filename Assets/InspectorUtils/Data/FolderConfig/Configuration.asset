@@ -13,51 +13,51 @@ MonoBehaviour:
   m_Name: Configuration
   m_EditorClassIdentifier: 
   Elements:
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_1
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_1
     ColorType: 0
-    IconType: 0
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_2
+    IconType: -1
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_2
     ColorType: 1
-    IconType: 1
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_3
+    IconType: -1
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_3
     ColorType: 2
-    IconType: 2
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_4
+    IconType: -1
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_4
     ColorType: 3
-    IconType: 3
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_5
+    IconType: -1
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_5
     ColorType: 4
-    IconType: 4
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_6
+    IconType: -1
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_6
     ColorType: 5
-    IconType: 5
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_7
+    IconType: 0
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_7
     ColorType: 6
-    IconType: 6
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_8
+    IconType: 1
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_8
     ColorType: 7
-    IconType: 7
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_9
+    IconType: 2
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_9
     ColorType: 8
-    IconType: 8
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_10
+    IconType: 3
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_10
     ColorType: 9
-    IconType: -1
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_11
+    IconType: 4
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_11
     ColorType: 10
-    IconType: -1
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
-  - FolderPath: Assets/InspectorUtils/_Demo/Folders/_12
+    IconType: 5
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_12
     ColorType: 11
-    IconType: -1
-    CustomFolderColor: {r: 0, g: 0, b: 0, a: 0}
+    IconType: 6
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}

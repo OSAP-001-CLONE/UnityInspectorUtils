@@ -1,9 +1,10 @@
-
 using System.Collections.Generic;
 using UnityEditor;
 using IUtil.SO;
 using UnityEngine;
 using IUtil.Utils;
+using System;
+using System.Linq;
 
 namespace IUtil.ProjectWindow
 {
@@ -15,19 +16,30 @@ namespace IUtil.ProjectWindow
         public static Dictionary<string, FolderConfigElement> ConfigDict { get; private set; } = new();
         public static Dictionary<FolderColorType, Texture2D> ColoredFolders { get; private set; } = new();
         public static Dictionary<FolderIconType, Texture2D> Icons { get; private set; } = new();
+        private static FolderConfig configSO = null;
 
-        static FolderConfigLoader()
+		static FolderConfigLoader()
         {
             LoadAll();
 
             EditorApplication.projectChanged -= LoadAll;
-
             EditorApplication.projectChanged += LoadAll;
+        }
+
+        public static void SaveAll()
+        {
+            if (configSO == null) return;
+			ConfigDict = ConfigDict
+	            .Where(kv => AssetDatabase.IsValidFolder(kv.Key))
+	            .ToDictionary(kv => kv.Key, kv => kv.Value);
+
+            Debug.Log(ConfigDict.Count);
+			configSO.Elements = ConfigDict.Values.ToList();
         }
 
         public static void LoadAll()
         {
-            RefreshConfigs();
+			RefreshConfigs();
             LoadFolderColorTextures();
             LoadIconTextures();
         }
@@ -35,15 +47,23 @@ namespace IUtil.ProjectWindow
         private static void RefreshConfigs()
         {
             ConfigDict.Clear();
+			configSO = AssetDatabase.LoadAssetAtPath<FolderConfig>(Constants.PATH_FOLDER_CONFIG);
 
-            FolderConfig config = AssetDatabase.LoadAssetAtPath<FolderConfig>(Constants.PATH_FOLDER_CONFIG);
-
-            for (int i = 0; i < config.Elements.Count; i++)
+            if (configSO == null)
             {
-                if (config != null && !string.IsNullOrEmpty(config.Elements[i].FolderPath))
-                    ConfigDict[config.Elements[i].FolderPath] = config.Elements[i];
+                Debug.LogWarning("PathConfig SO Doesn't Exist");
+                return;
             }
-        }
+			foreach (var entry in configSO.Elements)
+			{
+                if (!AssetDatabase.IsValidFolder(entry.Path)) continue;
+				if (entry != null && !string.IsNullOrEmpty(entry.Path))
+                {
+                    ConfigDict[entry.Path] = entry;
+                }
+			}
+		}
+
 
         private static void LoadFolderColorTextures()
         {
@@ -76,9 +96,9 @@ namespace IUtil.ProjectWindow
 
             foreach (FolderIconType iconType in System.Enum.GetValues(typeof(FolderIconType)))
             {
-                if (iconType == FolderIconType.None)
+                if (iconType < 0)
                     continue;
-                    
+
                 Icons[iconType] = EditorGUIUtility.IconContent(GetIconName(iconType)).image as Texture2D;
             }
         }
@@ -110,6 +130,25 @@ namespace IUtil.ProjectWindow
                     return null;
             }
         }
-    }
+
+
+        /// <summary>
+        /// Save path info in Scritable Object,
+        ///     and Re-Load all.
+        /// </summary>
+        public static void SetCustomFolderConfig<T>(string path, int idx) where T : Enum
+        {
+            if (!ConfigDict.ContainsKey(path)) ConfigDict[path] = new FolderConfigElement(path);
+            if (typeof(T) == typeof(FolderIconType)) ConfigDict[path].IconType = (FolderIconType)idx;
+            if (typeof(T) == typeof(FolderColorType)) ConfigDict[path].ColorType = (FolderColorType)idx;
+
+            SaveAll();
+
+			EditorUtility.SetDirty(configSO);
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
+            LoadAll();
+		}
+	}
 #endif
 }

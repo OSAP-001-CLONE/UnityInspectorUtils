@@ -39,7 +39,6 @@ namespace IUtil
 		DodgerBlue,
 		Blue,
 		Purple,
-		White,
 		Black,
 		Custom
 	}

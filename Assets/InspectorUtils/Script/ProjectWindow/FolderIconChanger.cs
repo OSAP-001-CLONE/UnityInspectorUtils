@@ -49,7 +49,7 @@ namespace IUtil.ProjectWindow
 					GUI.color = Color.white;
 				}
 
-				if (config.IconType != FolderIconType.None && FolderConfigLoader.Icons != null)
+				if (config.IconType >= 0 && FolderConfigLoader.Icons != null)
 				{
 					GUI.DrawTexture(additionalRect, FolderConfigLoader.Icons[config.IconType]);
 				}
