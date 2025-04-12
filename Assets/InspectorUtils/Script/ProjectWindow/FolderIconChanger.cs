@@ -8,19 +8,18 @@ namespace IUtil.ProjectWindow
 	[InitializeOnLoad]
 	public class FolderIconChanger
 	{
-		private static Texture2D closedFolderIcon;
 		static FolderIconChanger()
 		{
 			EditorApplication.projectWindowItemOnGUI += HandleProjectWindowItemOnGUI;
 		}
+
 		private static void HandleProjectWindowItemOnGUI(string guid, Rect rect)
 		{
 			string path = AssetDatabase.GUIDToAssetPath(guid);
 			if (path == "Assets" || path == "Assets/") return;
-			closedFolderIcon = EditorGUIUtility.IconContent("Folder Icon").image as Texture2D;
 
-			Rect imageRect;
 			Rect additionalRect;
+			Rect imageRect;
 
 			if (rect.height > 20)
 			{

@@ -33,7 +33,6 @@ namespace IUtil.ProjectWindow
 	            .Where(kv => AssetDatabase.IsValidFolder(kv.Key))
 	            .ToDictionary(kv => kv.Key, kv => kv.Value);
 
-            Debug.Log(ConfigDict.Count);
 			configSO.Elements = ConfigDict.Values.ToList();
         }
 
@@ -44,6 +43,7 @@ namespace IUtil.ProjectWindow
             LoadIconTextures();
         }
 
+
         private static void RefreshConfigs()
         {
             ConfigDict.Clear();
@@ -51,7 +51,7 @@ namespace IUtil.ProjectWindow
 
             if (configSO == null)
             {
-                Debug.LogWarning("PathConfig SO Doesn't Exist");
+                IUtilDebug.ConfigurationNullError("Folder Config", Constants.PATH_FOLDER_CONFIG);
                 return;
             }
 			foreach (var entry in configSO.Elements)
@@ -63,8 +63,6 @@ namespace IUtil.ProjectWindow
                 }
 			}
 		}
-
-
         private static void LoadFolderColorTextures()
         {
             ColoredFolders.Clear();
@@ -89,8 +87,7 @@ namespace IUtil.ProjectWindow
                 }
             }
         }
-
-        public static void LoadIconTextures()
+        private static void LoadIconTextures()
         {
             Icons.Clear();
 
@@ -99,38 +96,9 @@ namespace IUtil.ProjectWindow
                 if (iconType < 0)
                     continue;
 
-                Icons[iconType] = EditorGUIUtility.IconContent(GetIconName(iconType)).image as Texture2D;
+                Icons[iconType] = EditorGUIUtility.IconContent(iconType.GetIconName()).image as Texture2D;
             }
         }
-
-        private static string GetIconName(FolderIconType type)
-        {
-            switch (type)
-            {
-                case FolderIconType.Script:
-                    return "cs Script Icon";
-                case FolderIconType.Material:
-                    return "d_Material Icon";
-                case FolderIconType.Shader:
-                    return "d_Shader Icon";
-                case FolderIconType.Prefab:
-                    return "Prefab Icon";
-                case FolderIconType.ScriptableObject:
-                    return "d_ScriptableObject Icon";
-                case FolderIconType.Texture:
-                    return "d_Texture Icon";
-                case FolderIconType.Animator:
-                    return "AnimatorController Icon";
-                case FolderIconType.Audio:
-                    return "AudioClip Icon";
-                case FolderIconType.Font:
-                    return "d_Font Icon";
-                case FolderIconType.None:
-                default:
-                    return null;
-            }
-        }
-
 
         /// <summary>
         /// Save path info in Scritable Object,
@@ -148,6 +116,20 @@ namespace IUtil.ProjectWindow
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
             LoadAll();
+		}
+
+        public static void ResetCustom(string path)
+        {
+            if (!ConfigDict.ContainsKey(path)) return;
+
+            ConfigDict.Remove(path);
+
+			SaveAll();
+
+			EditorUtility.SetDirty(configSO);
+			AssetDatabase.SaveAssets();
+			AssetDatabase.Refresh();
+			LoadAll();
 		}
 	}
 #endif

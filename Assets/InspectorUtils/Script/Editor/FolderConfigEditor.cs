@@ -50,25 +50,37 @@ namespace IUtil.CustomEditor
         }
 
         private void OnGUI()
-        {
-            DrawFolderDropBox();
+		{
+			GUIStyle centeredBoldLabel = new GUIStyle(EditorStyles.boldLabel);
+			centeredBoldLabel.alignment = TextAnchor.MiddleCenter;
 
 			GUILayout.Space(10);
-            GUILayout.Label("Folder Colors", EditorStyles.boldLabel);
-            DrawFolderGrid(FolderConfigLoader.ColoredFolders, 6, position.width - 2 * (FolderConfigLoader.ColoredFolders.Count + 1));
+			GUILayout.Label("Folder Path ( Drag a folder below )", centeredBoldLabel, GUILayout.ExpandWidth(true));
+			GUILayout.Space(10);
 
-            GUILayout.Space(20);
-            DrawFolderGrid(FolderConfigLoader.Icons, 9, position.width - 4 * (FolderConfigLoader.Icons.Count + 1));
-        }
+			DrawFolderDropBox();
+
+			GUILayout.Space(10);
+			GUILayout.Label("Folder Colors", centeredBoldLabel, GUILayout.ExpandWidth(true));
+
+			DrawFolderGrid(FolderConfigLoader.ColoredFolders, 6, position.width);
+            
+			GUILayout.Label("Folder Icons", centeredBoldLabel, GUILayout.ExpandWidth(true));
+            GUILayout.Space(5);
+
+			DrawFolderGrid(FolderConfigLoader.Icons, 9, position.width);
+
+			GUILayout.Space(10);
+            DrawResetButton();
+		}
 
         private void DrawFolderDropBox()
 		{
+            GUI.enabled = false;
+			Rect dropArea = EditorGUILayout.GetControlRect();
+			EditorGUI.TextField(dropArea, folderPath);
 
-			GUILayout.Label("Folder Path:", EditorStyles.boldLabel);
-			EditorGUILayout.TextField(folderPath);
-
-			Rect dropArea = GUILayoutUtility.GetRect(0.0f, 50.0f, GUILayout.ExpandWidth(true));
-			GUI.Box(dropArea, "Drag Folder Here", EditorStyles.helpBox);
+			GUI.enabled = true;
 
 			Event evt = Event.current;
 
@@ -109,8 +121,9 @@ namespace IUtil.CustomEditor
             foreach (int y in Enumerable.Range(0, rows))
             {
                 EditorGUILayout.BeginHorizontal();
+				GUILayout.Space(20f);
 
-                for (int x = 0; x < iconsPerRow; x++)
+				for (int x = 0; x < iconsPerRow; x++)
                 {
                     if (drawn >= count) break;
 
@@ -122,7 +135,7 @@ namespace IUtil.CustomEditor
 
                     if (dict.TryGetValue(key, out var tex) && tex != null)
                     {
-                        if (GUILayout.Button(tex, GUIStyle.none, GUILayout.Width(width / iconsPerRow), GUILayout.Height(width / iconsPerRow)))
+                        if (GUILayout.Button(tex, GUIStyle.none, GUILayout.Width((width -40f)/ iconsPerRow), GUILayout.Height((width - 40f) / iconsPerRow)))
                         {
                             FolderConfigLoader.SetCustomFolderConfig<T>(folderPath, drawn);
                         }
@@ -130,7 +143,16 @@ namespace IUtil.CustomEditor
                     }
                 }
 
-                EditorGUILayout.EndHorizontal();
+				GUILayout.Space(20f);
+				EditorGUILayout.EndHorizontal();
+            }
+        }
+
+        private void DrawResetButton()
+        {
+            if (GUILayout.Button("Reset Custom"))
+            {
+                FolderConfigLoader.ResetCustom(folderPath);
             }
         }
     }

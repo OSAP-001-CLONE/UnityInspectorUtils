@@ -46,6 +46,35 @@ namespace IUtil.Utils
 
 			return Convert.ToBoolean(fieldInfo.GetValue(targetObject));
 		}
+
+		public static string GetIconName(this FolderIconType type)
+		{
+			switch (type)
+			{
+				case FolderIconType.Script:
+					return "cs Script Icon";
+				case FolderIconType.Material:
+					return "d_Material Icon";
+				case FolderIconType.Shader:
+					return "d_Shader Icon";
+				case FolderIconType.Prefab:
+					return "Prefab Icon";
+				case FolderIconType.ScriptableObject:
+					return "d_ScriptableObject Icon";
+				case FolderIconType.Texture:
+					return "d_Texture Icon";
+				case FolderIconType.Animator:
+					return "AnimatorController Icon";
+				case FolderIconType.Audio:
+					return "AudioClip Icon";
+				case FolderIconType.Font:
+					return "d_Font Icon";
+				case FolderIconType.None:
+				default:
+					return null;
+			}
+		}
+
 	}
 #endif
 }
