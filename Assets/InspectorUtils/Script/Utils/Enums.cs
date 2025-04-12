@@ -57,6 +57,7 @@ namespace IUtil
 		ScriptableObject,
 		Texture,
 		Animator,
-		Audio
+		Audio,
+		Font
 	}
 }

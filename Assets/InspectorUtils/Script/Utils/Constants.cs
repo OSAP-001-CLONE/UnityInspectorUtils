@@ -16,6 +16,9 @@ namespace IUtil.Utils
 			Color.gray,
 			Color.black
 		};
+
+		public static readonly string PATH_FOLDER_CONFIG = "Assets/InspectorUtils/Data/FolderConfig/Configuration.asset";
+		public static readonly string PATH_FOLDER_TEXTURE =  "Assets/InspectorUtils/Sprites/Folders" ;
 	}
 
 }

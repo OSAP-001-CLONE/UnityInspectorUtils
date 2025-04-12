@@ -40,7 +40,7 @@ namespace IUtil.ProjectWindow
 
 			if (AssetDatabase.IsValidFolder(path))
 			{
-				if (!FolderConfigLoader.ConfigDict.TryGetValue(path, out FolderConfig config)) return;
+				if (!FolderConfigLoader.ConfigDict.TryGetValue(path, out FolderConfigElement config)) return;
 
 				if (config.ColorType != FolderColorType.None && FolderConfigLoader.ColoredFolders != null)
 				{

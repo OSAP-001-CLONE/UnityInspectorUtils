@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using IUtil.SO;
 using UnityEngine;
+using IUtil.Utils;
 
 namespace IUtil.ProjectWindow
 {
@@ -11,7 +12,7 @@ namespace IUtil.ProjectWindow
     [InitializeOnLoad]
     public static class FolderConfigLoader
     {
-        public static Dictionary<string, FolderConfig> ConfigDict { get; private set; } = new();
+        public static Dictionary<string, FolderConfigElement> ConfigDict { get; private set; } = new();
         public static Dictionary<FolderColorType, Texture2D> ColoredFolders { get; private set; } = new();
         public static Dictionary<FolderIconType, Texture2D> Icons { get; private set; } = new();
 
@@ -19,35 +20,9 @@ namespace IUtil.ProjectWindow
         {
             LoadAll();
 
-            EditorApplication.projectChanged -= RefreshConfigs;
-            EditorApplication.projectChanged -= LoadFolderColorTextures;
-            EditorApplication.projectChanged -= LoadIconTextures;
+            EditorApplication.projectChanged -= LoadAll;
 
-            EditorApplication.projectChanged += RefreshConfigs;
-            EditorApplication.projectChanged += LoadFolderColorTextures;
-            EditorApplication.projectChanged += LoadIconTextures;
-        }
-
-        public static FolderConfig FindOrCreateFolderConfig(string folderPath)
-        {
-            string[] guids = AssetDatabase.FindAssets("t:FolderConfig", new[] { "Assets/InspectorUtils/Data/FolderConfig" });
-
-            foreach (var guid in guids)
-            {
-                string path = AssetDatabase.GUIDToAssetPath(guid);
-                var config = AssetDatabase.LoadAssetAtPath<FolderConfig>(path);
-                if (config.FolderPath == folderPath)
-                    return config;
-            }
-
-            // 없으면 새로 생성
-            var newConfig = ScriptableObject.CreateInstance<FolderConfig>();
-            newConfig.FolderPath = folderPath;
-
-            string name = System.IO.Path.GetFileName(folderPath);
-
-
-            return null;
+            EditorApplication.projectChanged += LoadAll;
         }
 
         public static void LoadAll()
@@ -61,19 +36,15 @@ namespace IUtil.ProjectWindow
         {
             ConfigDict.Clear();
 
-            string[] guids = AssetDatabase.FindAssets("t:FolderConfig", new[] { "Assets/InspectorUtils/Data/FolderConfig" });
+            FolderConfig config = AssetDatabase.LoadAssetAtPath<FolderConfig>(Constants.PATH_FOLDER_CONFIG);
 
-            foreach (string guid in guids)
+            for (int i = 0; i < config.Elements.Count; i++)
             {
-                string path = AssetDatabase.GUIDToAssetPath(guid);
-                FolderConfig config = AssetDatabase.LoadAssetAtPath<FolderConfig>(path);
-
-                if (config != null && !string.IsNullOrEmpty(config.FolderPath))
-                {
-                    ConfigDict[config.FolderPath] = config;
-                }
+                if (config != null && !string.IsNullOrEmpty(config.Elements[i].FolderPath))
+                    ConfigDict[config.Elements[i].FolderPath] = config.Elements[i];
             }
         }
+
         private static void LoadFolderColorTextures()
         {
             ColoredFolders.Clear();
@@ -84,7 +55,7 @@ namespace IUtil.ProjectWindow
                     continue;
 
                 string fileName = colorType.ToString();
-                string[] guids = AssetDatabase.FindAssets($"{fileName} t:Texture2D", new[] { "Assets/InspectorUtils/Sprites/Folders" });
+                string[] guids = AssetDatabase.FindAssets($"{fileName} t:Texture2D", new[] { Constants.PATH_FOLDER_TEXTURE });
 
                 if (guids.Length > 0)
                 {
@@ -98,7 +69,8 @@ namespace IUtil.ProjectWindow
                 }
             }
         }
-        private static void LoadIconTextures()
+
+        public static void LoadIconTextures()
         {
             Icons.Clear();
 
@@ -106,20 +78,36 @@ namespace IUtil.ProjectWindow
             {
                 if (iconType == FolderIconType.None)
                     continue;
+                    
+                Icons[iconType] = EditorGUIUtility.IconContent(GetIconName(iconType)).image as Texture2D;
+            }
+        }
 
-                string fileName = iconType.ToString();
-                string[] guids = AssetDatabase.FindAssets($"{fileName} t:Texture2D", new[] { "Assets/InspectorUtils/Sprites/Icons" });
-
-                if (guids.Length > 0)
-                {
-                    string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                    Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
-
-                    if (texture != null)
-                    {
-                        Icons[iconType] = texture;
-                    }
-                }
+        private static string GetIconName(FolderIconType type)
+        {
+            switch (type)
+            {
+                case FolderIconType.Script:
+                    return "cs Script Icon";
+                case FolderIconType.Material:
+                    return "d_Material Icon";
+                case FolderIconType.Shader:
+                    return "d_Shader Icon";
+                case FolderIconType.Prefab:
+                    return "Prefab Icon";
+                case FolderIconType.ScriptableObject:
+                    return "d_ScriptableObject Icon";
+                case FolderIconType.Texture:
+                    return "d_Texture Icon";
+                case FolderIconType.Animator:
+                    return "AnimatorController Icon";
+                case FolderIconType.Audio:
+                    return "AudioClip Icon";
+                case FolderIconType.Font:
+                    return "d_Font Icon";
+                case FolderIconType.None:
+                default:
+                    return null;
             }
         }
     }
