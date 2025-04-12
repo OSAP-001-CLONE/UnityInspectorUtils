@@ -4,11 +4,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using IUtil.Utils;
-using IUtil;
-using JetBrains.Annotations;
 
-namespace InspectorUtils.Utils
+namespace IUtil.Utils
 {
     [CustomEditor(typeof(MonoBehaviour), true)]
     public class MonoBehaviourEditor : Editor

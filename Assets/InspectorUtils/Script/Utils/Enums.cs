@@ -22,4 +22,41 @@ namespace IUtil
 		Warning,
 		Error
 	}
+
+	/// <summary>
+	/// Types for Folder's Color (12 Colors)
+	/// </summary>
+	public enum FolderColorType
+	{
+		None = -1,
+		Red = 0,
+		Orange,
+		Yellow,
+		Chartreuse,
+		Green,
+		SpringGreen,
+		Cyan,
+		DodgerBlue,
+		Blue,
+		Purple,
+		White,
+		Black,
+		Custom
+	}
+
+	/// <summary>
+	/// Types for additional icon (revealed in bottom-left of folder)
+	/// </summary>
+	public enum FolderIconType
+	{
+		None = -1,
+		Script = 0,
+		Material,
+		Shader,
+		Prefab,
+		ScriptableObject,
+		Texture,
+		Animator,
+		Audio
+	}
 }
