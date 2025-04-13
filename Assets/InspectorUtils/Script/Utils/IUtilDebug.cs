@@ -18,5 +18,10 @@ namespace IUtil.Utils
 		{
 			Debug.LogError($"IUtil Error : [{attr}] - {funcName} \nThe number of parameters does not match.");
 		}
+
+		public static void ConfigurationNullError(string configName, string path)
+		{
+			Debug.LogError($"IUtil Error : [{configName}] - Configuration SO file doesn't exist. \n Check Here : {path}");
+		}
 	}
 }
