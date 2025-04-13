@@ -24,7 +24,7 @@ Unity Inspector Utils is a collection of powerful custom attributes designed to 
 
 ### Import
 
-Go to release tab (https://github.com/qweasfjbv/UnityInspectorUtils/releases/tag/v1.0.0)
+Go to release tab (https://github.com/qweasfjbv/UnityInspectorUtils/releases)
 ![image](https://github.com/user-attachments/assets/a4b43bbf-bd49-458f-b1c7-6ab6f8a21f5a)
 
 Download the `.unitypackage` file and import it into Unity.
