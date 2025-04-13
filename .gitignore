@@ -75,5 +75,4 @@ crashlytics-build.properties
 
 # IDE Configurations
 .vscode/
-.editorconfig
 .vsconfig

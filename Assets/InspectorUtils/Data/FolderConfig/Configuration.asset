@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: Configuration
   m_EditorClassIdentifier: 
   Elements:
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_1
+    ColorType: 0
+    IconType: 2
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
   - Path: Assets/InspectorUtils/_Demo/CustomFolders/_2
     ColorType: 1
-    IconType: -1
+    IconType: 1
     CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
   - Path: Assets/InspectorUtils/_Demo/CustomFolders/_3
     ColorType: 2
@@ -31,33 +35,29 @@ MonoBehaviour:
     CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
   - Path: Assets/InspectorUtils/_Demo/CustomFolders/_6
     ColorType: 5
-    IconType: 0
+    IconType: -1
     CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
   - Path: Assets/InspectorUtils/_Demo/CustomFolders/_7
     ColorType: 6
-    IconType: 1
-    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
-  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_9
-    ColorType: 8
-    IconType: 3
-    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
-  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_10
-    ColorType: 9
-    IconType: 4
-    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
-  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_11
-    ColorType: 10
-    IconType: 5
-    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
-  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_12
-    ColorType: 11
-    IconType: 6
+    IconType: -1
     CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
   - Path: Assets/InspectorUtils/_Demo/CustomFolders/_8
     ColorType: 7
-    IconType: 2
-    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
-  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_1
-    ColorType: 0
     IconType: -1
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_9
+    ColorType: 8
+    IconType: -1
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_10
+    ColorType: 9
+    IconType: -1
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_11
+    ColorType: 10
+    IconType: -1
+    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+  - Path: Assets/InspectorUtils/_Demo/CustomFolders/_12
+    ColorType: 11
+    IconType: 0
     CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
