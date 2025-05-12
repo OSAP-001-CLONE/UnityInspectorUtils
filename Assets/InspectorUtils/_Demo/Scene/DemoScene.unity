@@ -128,6 +128,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 158307654}
+  - component: {fileID: 158307655}
+  - component: {fileID: 158307656}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -150,6 +152,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &158307655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158307653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a59b0dda9bdee458db793fb384db9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nestedClass:
+    IsShow: 0
+    showString: 
+--- !u!114 &158307656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158307653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e376d389a6452a4c9d15d5dbc9941a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isReadonly: 0
+  readonlyValue: 0
+  isHide: 0
+  hideValue: 0
+  isShow: 0
+  showValue:
+  - 0
+  - 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
