@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System;
 
 namespace IUtil._Demo
 {
@@ -14,7 +16,7 @@ namespace IUtil._Demo
 
 		public bool isShow;
 		[ShowIf(nameof(isShow))]
-		public float showValue;
+		public List<float> showValue;
 
 	}
 }
