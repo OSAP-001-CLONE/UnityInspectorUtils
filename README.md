@@ -2,8 +2,10 @@
 
 Unity Inspector Utils is a collection of powerful custom attributes designed to improve the Unity Inspector ( or Editor ) experience, making it more dynamic and user-friendly.
 
-<image src="https://github.com/user-attachments/assets/31efe11a-0dd4-46c2-bb52-b37495b3dc09" width = 40%></image>  <image src="https://github.com/user-attachments/assets/9dafdac7-ba47-4257-a519-4b940d34bca7" width = 40%></image>
-
+<p align="center">
+  <image src="https://github.com/user-attachments/assets/be5e2dd6-9337-4870-bb46-e0bb3ca3fc31" width=28%></image>
+  <image src="https://github.com/user-attachments/assets/5de49d1d-aa3a-409a-8e70-5b44182ebb93" width=50%></image>
+</p>
 
 ### Features
 
@@ -35,7 +37,7 @@ Download the `.unitypackage` file and import it into Unity.
 ![image](https://github.com/user-attachments/assets/97a7d06c-8be0-492e-9e06-3222ba58deaa)
 
 
-### Tab Groups
+### Tab / Foldout Group
 
 ```cs
 [TabGroup("Main", "Tab1")]
@@ -45,6 +47,13 @@ public Vector3 mainTab1Vec;
 [TabGroup("Sub", "Tab1")]
 public int subTab1Int;
 public float subTab1Float;
+
+[FoldoutGroup("Fold1")]
+public float foldFloat1;
+public float foldFloat2;
+
+[TabGroup("Sub", "Tab1")]
+public string subTab1String;
 
 [TabGroup("Sub", "Tab2")]
 public float subTab2Float;
@@ -59,48 +68,11 @@ public string mainTab3String;
 public int mainTab3Int;
 ```
 <p align="center">
-  <image src="https://github.com/user-attachments/assets/2d434b83-a5fa-4de1-bf10-91bc13d77457" width="30%"></image>
-  <image src="https://github.com/user-attachments/assets/355686a0-4b3e-4383-869f-64fd444af4a8" width="30%"></image>
-  <image src="https://github.com/user-attachments/assets/14fdd170-9392-4fab-8d09-97ff512c49ab" width="30%"></image>
+  <image src="https://github.com/user-attachments/assets/be5e2dd6-9337-4870-bb46-e0bb3ca3fc31"></image>
 </p>
 
 <br>
 
-### Foldout Groups
-
-```cs
-[FoldoutGroup("Fold1")]
-public float foldFloat1;
-public float foldFloat2;
-
-[FoldoutGroup("Fold2", 20, ColorType.Red)]
-public int foldInt1;
-public int foldInt2;
-```
-
-<p align="center">
-  <image src="https://github.com/user-attachments/assets/a6d17366-17ba-40d2-9660-1ef4c5c27fb4" width="30%"></image>
-  <image src="https://github.com/user-attachments/assets/74752a1e-f71b-4f8b-ae62-8fc3eadc28b8" width="30%"></image>
-</p>
-
-<br>
-
-```cs
-[TabGroup("Main", "Tab1")]
-[FoldoutGroup("Tab1Fold")]
-public float fold1Float;
-
-[TabGroup("Main", "Tab2")]
-[FoldoutGroup("Tab2Fold")]
-public float fold2Float;
-```
-
-<p align="center">
-  <image src="https://github.com/user-attachments/assets/a1406d47-8dcf-475f-8c1c-60cbd3dd1777" width="30%"></image>
-  <image src="https://github.com/user-attachments/assets/f6eb1031-e732-43eb-931f-f897619d3bf4" width="30%"></image>
-</p>
-
-<br>
 
 ### If Attributes
 
@@ -119,53 +91,71 @@ public float showValue;
 ```
 
 <p align="center">
-  <image src="https://github.com/user-attachments/assets/8316857e-9865-4b7a-bad9-ae3437ac0424" width="30%"></image>
-  <image src="https://github.com/user-attachments/assets/44ab6b9f-e84a-482e-8dce-4aad0a209002" width="30%"></image>
+  <image src="https://github.com/user-attachments/assets/5ca9ee90-650c-4440-95de-fd226dce849e" width="30%"></image>
 </p>
 
-<br>
+```cs
+
+[System.Serializable]
+public class NestedClass
+{
+    public bool IsShow;
+    [ShowIf(nameof(IsShow))] public string showString;
+}
+
+public List<NestedClass> nestedClass = new();
+```
+
+<p align="center">
+  <image src="https://github.com/user-attachments/assets/90abb850-d404-48a9-91f3-d6533381be86" width="30%"></image>
+</p>
+
 
 ### Popup Option
 
 ```cs
-private int[] intOptions = new int[] { 1, 2, 3 };
-private float[] floatOptions = new float[] { 5.0f, 6.0f, 7.0f };
-private string[] stringOptions = new string[] { "Option1", "Option2", "Option3" };
+public int[] intOptions = new int[] { 1, 2, 3 };
+public float[] floatOptions = new float[] { 5.1f, 6.3f, 7.3f };
+public string[] stringOptions = new string[] { "Option1", "Option2", "Option3" };
 
-[PopupOption(nameof(intOptions))]
-public int selectInt;
+[SerializeField, PopupOption(nameof(intOptions))]
+private int selectInt;
 
-[PopupOption(nameof(floatOptions), 1)]
+[SerializeField, PopupOption(nameof(floatOptions), 1)]
 public float selectFloat;
 
-[PopupOption(nameof(stringOptions), 2)]
+[SerializeField, PopupOption(nameof(stringOptions), 2)]
 public string selectString;
 ```
 
 <p align="center">
-  <image src="https://github.com/user-attachments/assets/f6ca510c-ac9a-4f9e-a461-0403ceb40de2" width="30%"></image>
-  <image src="https://github.com/user-attachments/assets/88e5c14e-ff83-43b6-bfa9-ae410201eae4" width="30%"></image>
-  <image src="https://github.com/user-attachments/assets/06fd8172-81c1-4f1b-9211-a7bf223ba83d" width="30%"></image>
+  <image src="https://github.com/user-attachments/assets/d99c9117-b0b0-4513-8765-6b51917ebfee" width="30%"></image>
 </p>
 
-<br>
 
 ### Button
 
 ```cs
-public int FuncParam1;
-public float FuncParam2;
+		public string Func1Param1;
+		[Space(10)]
+		public int Func2Param1;
+		public float Func2Param2;
 
-[Button(nameof(FuncParam1), nameof(FuncParam2))]
-public void Func(int param1, float param2)
-{
-  Debug.Log($"Func2 Executed! \nParam1 : {param1}, Param2 : {param2}");
-}
+		[Button]
+		public void Func0()
+		{
+			Debug.Log($"Func0 Excuted");
+		}
+
+		[Button(nameof(Func2Param1), nameof(Func2Param2))]
+		public void Func2(int param1, float param2)
+		{
+			Debug.Log($"Func2 Executed! \nParam1 : {param1}, Param2 : {param2}");
+		}
 ```
 
 <p align="center">
-  <image src="https://github.com/user-attachments/assets/bba29437-8999-4060-b217-c04c41e8b529"></image>
-  <image src="https://github.com/user-attachments/assets/51b0fb05-561d-403f-90b1-26f0517e7bd7"></image>
+  <image src="https://github.com/user-attachments/assets/fe10d20b-27e0-4fcb-bf21-87057727783d" width=50%></image>
 </p>
 
 ---
@@ -174,9 +164,13 @@ public void Func(int param1, float param2)
 
 1. Open folder custom window
 
-![image](https://github.com/user-attachments/assets/5ea04ad5-91ea-444e-8de8-2e1db312afe0)
+<p align="center">
+  <image src="https://github.com/user-attachments/assets/0fd684ab-acc5-48f3-801a-bec146fb00d2" width=50%></image>
+</p>
 
 2. You can custom folder here.
 
-![tmp](https://github.com/user-attachments/assets/8d0a4957-4410-4cfc-b5e0-56a62a3b7b65)
+<p align="center">
+  <image src="https://github.com/user-attachments/assets/5de49d1d-aa3a-409a-8e70-5b44182ebb93" width=50%></image>
+</p>
 

@@ -128,8 +128,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 158307654}
-  - component: {fileID: 158307655}
   - component: {fileID: 158307656}
+  - component: {fileID: 158307657}
+  - component: {fileID: 158307658}
+  - component: {fileID: 158307659}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -152,21 +154,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &158307655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158307653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41a59b0dda9bdee458db793fb384db9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nestedClass:
-    IsShow: 0
-    showString: 
 --- !u!114 &158307656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,9 +171,79 @@ MonoBehaviour:
   isHide: 0
   hideValue: 0
   isShow: 0
-  showValue:
-  - 0
-  - 0
+  showValue: 0
+  nestedClass:
+  - IsShow: 0
+    showString: 
+  - IsShow: 0
+    showString: 
+  - IsShow: 0
+    showString: 
+--- !u!114 &158307657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158307653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88fa3a21992967245bd353188f5bdef4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainTab1Int: 1234
+  mainTab1Vec: {x: 0.3, y: 0.4, z: -1.4}
+  subTab1Int: -12
+  subTab1Float: -0.45
+  foldFloat1: 99
+  foldFloat2: 888
+  subTab1String: Sub tab 1
+  subTab2Float: 22.1
+  subTab2Int: 2345
+  mainTab2String: Tab2 String
+  mainTab2Int: 12
+  mainTab3String: Tab3 string
+  mainTab3Int: 31
+--- !u!114 &158307658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158307653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64138d35b33210e47b30be861ce3d38c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intOptions: 010000000200000003000000
+  floatOptions:
+  - 5.1
+  - 6.3
+  - 7.3
+  - 7.6
+  stringOptions:
+  - Option1
+  - Option2
+  - Option3
+  selectInt: 2
+  selectFloat: 7.6
+  selectString: Option3
+--- !u!114 &158307659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158307653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f6089af9e30deb41ad4376f9b00f308, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Func1Param1: 
+  Func2Param1: 0
+  Func2Param2: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

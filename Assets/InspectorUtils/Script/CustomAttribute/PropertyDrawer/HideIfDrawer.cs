@@ -20,6 +20,7 @@ namespace IUtil.CustomAttribute
 
 		public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
 		{
+			isActive = property.GetBoolean("HideIf", (attribute as HideIfAttribute).Condition);
 			return isActive ?
 				0f : EditorGUI.GetPropertyHeight(property, label);
 		}

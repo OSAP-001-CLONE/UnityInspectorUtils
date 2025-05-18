@@ -1,10 +1,15 @@
-using UnityEngine;
 using System.Collections.Generic;
-using System;
+using UnityEngine;
 
 namespace IUtil._Demo
 {
-    public class DemoScript_If : MonoBehaviour
+	[System.Serializable]
+	public class NestedClass
+	{
+		public bool IsShow;
+		[ShowIf(nameof(IsShow))] public string showString;
+	}
+	public class DemoScript_If : MonoBehaviour
 	{
 		public bool isReadonly;
 		[ReadOnlyIf(nameof(isReadonly))]
@@ -16,7 +21,8 @@ namespace IUtil._Demo
 
 		public bool isShow;
 		[ShowIf(nameof(isShow))]
-		public List<float> showValue;
+		public float showValue;
 
+		public List<NestedClass> nestedClass = new();
 	}
 }

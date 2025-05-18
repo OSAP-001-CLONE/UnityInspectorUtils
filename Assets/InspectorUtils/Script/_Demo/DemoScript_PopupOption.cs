@@ -4,9 +4,9 @@ namespace IUtil._Demo
 {
     public class DemoScript_PopupOption : MonoBehaviour
 	{
-		private int[] intOptions = new int[] { 1, 2, 3 };
-		private float[] floatOptions = new float[] { 5.0f, 6.0f, 7.0f };
-		private string[] stringOptions = new string[] { "Option1", "Option2", "Option3" };
+		public int[] intOptions = new int[] { 1, 2, 3 };
+		public float[] floatOptions = new float[] { 5.1f, 6.3f, 7.3f };
+		public string[] stringOptions = new string[] { "Option1", "Option2", "Option3" };
 
 		[SerializeField, PopupOption(nameof(intOptions))]
 		private int selectInt;
