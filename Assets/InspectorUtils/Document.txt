@@ -66,7 +66,9 @@
             - Find InspectorUtils/Script/ProjectWindow/
             - FolderConfigLoader.cs -> Load and save configs.
             - FolderIconChanger.cs  -> Draw custom folder icon over the original folder in editor.
-
+            
+            - Find InspectorUtils/Script/Editor/
+            - FolderConfigEditor.cs -> Custom folder config editor
 
     ## Any other issues ##
         - Send issues to my email (yeoinho75@gmail.com)
