@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using IUtil.ProjectWindow;
+using IUtil.SO;
 using UnityEditor;
 using UnityEngine;
+using static UnityEditor.Rendering.FilterWindow;
 
 namespace IUtil.CustomEditor
 {
@@ -42,16 +44,22 @@ namespace IUtil.CustomEditor
             var window = GetWindow<FolderCustomEditorWindow>("Folder Editor");
             window.folderPath = path;
 
-            Vector2 size = new Vector2(400, 300);
+            window.element = FolderConfigLoader.GetFolderConfigElement(path);
+            window.changedColor = window.element == null ? Color.white : window.element.CustomFolderColor;
+
+            Vector2 size = new Vector2(400, 400);
             window.minSize = size;
             window.maxSize = size;
 
             window.Show();
         }
 
+        private FolderConfigElement element = null;
         private void OnGUI()
-		{
-			GUIStyle centeredBoldLabel = new GUIStyle(EditorStyles.boldLabel);
+        {
+            element = FolderConfigLoader.GetFolderConfigElement(folderPath);
+
+            GUIStyle centeredBoldLabel = new GUIStyle(EditorStyles.boldLabel);
 			centeredBoldLabel.alignment = TextAnchor.MiddleCenter;
 
 			GUILayout.Space(10);
@@ -65,12 +73,20 @@ namespace IUtil.CustomEditor
 
 			DrawFolderGrid(FolderConfigLoader.ColoredFolders, 6, position.width);
             
+
+            if (element != null && element.ColorType == FolderColorType.Custom)
+            {
+                GUILayout.Space(5);
+                DrawColorSetter();
+                GUILayout.Space(5);
+            } 
+
 			GUILayout.Label("Folder Icons", centeredBoldLabel, GUILayout.ExpandWidth(true));
             GUILayout.Space(5);
 
 			DrawFolderGrid(FolderConfigLoader.Icons, 9, position.width);
 
-			GUILayout.Space(10);
+            GUILayout.Space(10);
             DrawResetButton();
 		}
 
@@ -135,10 +151,18 @@ namespace IUtil.CustomEditor
 
                     if (dict.TryGetValue(key, out var tex) && tex != null)
                     {
+
+                        if(typeof(T) == typeof(FolderColorType) && drawn == (int)FolderColorType.Custom)
+                        {
+                            if (element != null)
+                                GUI.color = element.CustomFolderColor;
+                        }
                         if (GUILayout.Button(tex, GUIStyle.none, GUILayout.Width((width -40f)/ iconsPerRow), GUILayout.Height((width - 40f) / iconsPerRow)))
                         {
                             FolderConfigLoader.SetCustomFolderConfig<T>(folderPath, drawn);
                         }
+
+                        GUI.color = Color.white;
                         drawn++;
                     }
                 }
@@ -146,6 +170,24 @@ namespace IUtil.CustomEditor
 				GUILayout.Space(20f);
 				EditorGUILayout.EndHorizontal();
             }
+        }
+
+        private Color changedColor = Color.white;
+        private void DrawColorSetter()
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+
+            changedColor = EditorGUILayout.ColorField(changedColor);
+            changedColor.a = 1f;
+
+            if (GUILayout.Button("Apply Color"))
+            {
+                FolderConfigLoader.SetCustomFolderColor(folderPath, changedColor);
+            }
+
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
         }
 
         private void DrawResetButton()

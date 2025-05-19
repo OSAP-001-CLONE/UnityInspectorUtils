@@ -118,6 +118,24 @@ namespace IUtil.ProjectWindow
             LoadAll();
 		}
 
+        public static void SetCustomFolderColor(string path, Color color)
+        {
+            if (!ConfigDict.ContainsKey(path)) ConfigDict[path] = new FolderConfigElement(path);
+            ConfigDict[path].CustomFolderColor = color;
+
+            SaveAll();
+
+            EditorUtility.SetDirty(configSO);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            LoadAll();
+        }
+        public static FolderConfigElement GetFolderConfigElement(string path)
+        {
+            if (!ConfigDict.ContainsKey(path)) return null;
+            return ConfigDict[path];
+        }
+
         public static void ResetCustom(string path)
         {
             if (!ConfigDict.ContainsKey(path)) return;

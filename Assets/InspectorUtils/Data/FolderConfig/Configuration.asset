@@ -60,4 +60,4 @@ MonoBehaviour:
   - Path: Assets/InspectorUtils/_Demo/CustomFolders/_12
     ColorType: 11
     IconType: 0
-    CustomFolderColor: {r: 1, g: 1, b: 1, a: 1}
+    CustomFolderColor: {r: 0.6075471, g: 0.6075471, b: 0.6075471, a: 1}
